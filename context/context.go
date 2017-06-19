@@ -14,6 +14,7 @@
 package context
 
 import (
+	"github.com/netbucket/httpr/tls"
 	"io"
 	"log"
 	"net/http"
@@ -27,18 +28,20 @@ import (
 
 // Context type holds the desired execution profile for a command
 type Context struct {
-	Mutex         *sync.Mutex
-	HttpService   string
-	UpstreamURL   *url.URL
-	Out           io.Writer
-	LogJSON       bool
-	LogPrettyJSON bool
-	Echo          bool
-	HttpCode      int
-	Delay         int
-	FailureMode   FailureSimulation
-	CertFile      string
-	KeyFile       string
+	Mutex           *sync.Mutex
+	HttpService     string
+	EnableTLS       bool
+	CertFile        string
+	KeyFile         string
+	UpstreamURL     *url.URL
+	Out             io.Writer
+	LogJSON         bool
+	LogPrettyJSON   bool
+	Echo            bool
+	HttpCode        int
+	Delay           int
+	IgnoreTLSErrors bool
+	FailureMode     FailureSimulation
 }
 
 // FailureSimulation desribes the intended behavior of the transient failure mode in httpr
@@ -58,7 +61,7 @@ var once sync.Once
 
 func Instance() *Context {
 	once.Do(func() {
-		singleton = &Context{Mutex: &sync.Mutex{}, FailureMode: FailureSimulation{Enabled: false}}
+		singleton = &Context{Mutex: &sync.Mutex{}, Out: os.Stdout, FailureMode: FailureSimulation{Enabled: false}}
 	})
 	return singleton
 }
@@ -66,8 +69,8 @@ func Instance() *Context {
 // Start the HTTP server
 func (ctx *Context) StartServer() {
 
-	if len(ctx.KeyFile) > 0 && len(ctx.CertFile) > 0 {
-		go log.Fatal(http.ListenAndServeTLS(ctx.HttpService, ctx.CertFile, ctx.KeyFile, nil))
+	if ctx.EnableTLS {
+		go log.Fatal(tls.StartHTTPSListener(ctx.HttpService, ctx.CertFile, ctx.KeyFile))
 	} else {
 		go log.Fatal(http.ListenAndServe(ctx.HttpService, nil))
 	}

@@ -17,31 +17,31 @@ To run **httpr** in Docker:
 
   ```docker run -p 8081:8081 netbucket/httpr log -e -p```
   
-### Install httpr binary
+### Installing httpr binary
 ### On macOS:
 1. Download the macOS binary:
 
-  ```curl -L0 https://sourceforge.net/projects/httpr/files/release/0.1.0/darwin/httpr -o httpr```
+   ```curl -L0 https://sourceforge.net/projects/httpr/files/release/0.1.3/darwin/httpr -o httpr```
   
   
 2. Make it executalbe:
 
-  ```chmod 755 httpr```
+   ```chmod 755 httpr```
 
 ### On Linux:
 1. Download the Linux binary:
 
-  ```curl -L0 https://sourceforge.net/projects/httpr/files/release/0.1.0/linux/httpr -o httpr```
+   ```curl -L0 https://sourceforge.net/projects/httpr/files/release/0.1.3/linux/httpr -o httpr```
   
   
 2. Make it executalbe:
 
-  ```chmod 755 httpr```
+   ```chmod 755 httpr```
 
 ### On Windows:
 1. Download the Windows binary:
 
-  ```curl -L0 https://sourceforge.net/projects/httpr/files/release/0.1.0/windows/httpr -o httpr.exe```
+   ```curl -L0 https://sourceforge.net/projects/httpr/files/release/0.1.3/windows/httpr -o httpr.exe```
 
 ### More to come
 Work is underway to make **httpr** also available via *brew* for macOS, and *apt-get* for Linux.
@@ -58,7 +58,7 @@ To simulate a delay in returning the HTTP response to the client, use the *-d mi
 ## Simulating Transient HTTP Failures
 **httpr** can make it easy to simulate transient HTTP errors. This is useful when testing HTTP retry logic, or the circuit breaking capabilities in HTTP clients (see https://martinfowler.com/bliki/CircuitBreaker.html). To do that, use the *-f* option. The *-f* option supports additional modifiers to specicfy exactly how the transient failures should be simulated. For instance, to simulate a series of 5 transient failures that return HTTP status 503, followed by 10 successful responses with status code 200, use:
 
-  ```httpr log -f --simulate-failure-count=5  --simulate-failure-code=503 --simulate-success-count=10```
+   ```httpr log -f --simulate-failure-count=5  --simulate-failure-code=503 --simulate-success-count=10```
   
  Note that *-f* and *-d* can be used together to simulate latency and transient errors at once.
  
@@ -66,5 +66,14 @@ To simulate a delay in returning the HTTP response to the client, use the *-d mi
  Using **httpr**, it is easy to simulate latency or transient failures in front of an existing HTTP based endpoint. To do that, use the `httpr proxy` command.
  For instance, to log and then proxy HTTP requests to `https://www.google.com`, while simulating a transient failure, use:
 
-  ```httpr proxy https://www.google.com -f```
- 
+   ```httpr proxy https://www.google.com -f```
+   
+## TLS/HTTPS Support
+To start **httpr** server in HTTPS mode, use the *-t* option. By default, **httpr** will generate and use
+a self-signed certificate, and print the PEM-encoded certificate to the console. To supply your own
+certificate, use the *--tls-cert-file* and *--tls-key-file* options with the *-t* flag to specify
+the path/name of the certificate file and the private key file.
+
+To ingore upstream TLS errors when proxying HTTPS requests with *httpr proxy*, use the *-k* flag with the *proxy* command.
+
+
