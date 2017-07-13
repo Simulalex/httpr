@@ -21,7 +21,7 @@ To run **httpr** in Docker:
 ### On macOS:
 1. Download the macOS binary:
 
-   ```curl -L0 https://sourceforge.net/projects/httpr/files/release/0.1.3/darwin/httpr -o httpr```
+   ```curl -L0 https://sourceforge.net/projects/httpr/files/release/1.0.0/darwin/httpr -o httpr```
   
   
 2. Make it executalbe:
@@ -31,7 +31,7 @@ To run **httpr** in Docker:
 ### On Linux:
 1. Download the Linux binary:
 
-   ```curl -L0 https://sourceforge.net/projects/httpr/files/release/0.1.3/linux/httpr -o httpr```
+   ```curl -L0 https://sourceforge.net/projects/httpr/files/release/1.0.0/linux/httpr -o httpr```
   
   
 2. Make it executalbe:
@@ -41,7 +41,7 @@ To run **httpr** in Docker:
 ### On Windows:
 1. Download the Windows binary:
 
-   ```curl -L0 https://sourceforge.net/projects/httpr/files/release/0.1.3/windows/httpr -o httpr.exe```
+   ```curl -L0 https://sourceforge.net/projects/httpr/files/release/1.0.0/windows/httpr -o httpr.exe```
 
 ### More to come
 Work is underway to make **httpr** also available via *brew* for macOS, and *apt-get* for Linux.
@@ -74,6 +74,6 @@ a self-signed certificate, and print the PEM-encoded certificate to the console.
 certificate, use the *--tls-cert-file* and *--tls-key-file* options with the *-t* flag to specify
 the path/name of the certificate file and the private key file.
 
-To ingore upstream TLS errors when proxying HTTPS requests with *httpr proxy*, use the *-k* flag with the *proxy* command.
+To ingore upstream TLS errors when proxying HTTPS requests with *httpr proxy*, use the *-k* flag.
 
 
